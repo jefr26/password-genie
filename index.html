@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>The Password Genie</title>    
+  <title>The Password Genie</title>
   <meta name="viewport" content="width=device-width" />
   <link rel="icon" href="images/favicon.png" sizes="32x32">
   <link rel="stylesheet" type="text/css" href="css/styles.css?1">
@@ -10,7 +10,7 @@
 
 <body>
   <div id="app">
-    <section class="wrapper">   
+    <section class="wrapper">
       <h1>The Password Genie</h1>
       <div class="password-box">
         <span id="password" class="password" v-on:click="copyToClipboard">{{ password }}</span>
@@ -25,7 +25,7 @@
           <div class="range-slider_wrapper slider-strength" v-bind:class="strength.text">
             <span class="slider-bar" v-bind:style="{ width: strength.score + '%' }"></span>
             <input type="range" class="range-slider" min="0" max="100" v-model="strength.score" disabled>
-          </div>  
+          </div>
         </div>
         <div class="seperator"></div>
         <div class="field-wrap">
@@ -34,27 +34,36 @@
           <div class="range-slider_wrapper">
             <span class="slider-bar" v-bind:style="{ width: lengthThumbPosition + '%' }"></span>
             <input type="range" class="range-slider" min="6" v-bind:max="settings.maxLength" v-model="settings.length">
-          </div>  
+          </div>
         </div>
-        <div class="field-wrap">  
+        <div class="field-wrap">
           <label>Digits</label>
           <span class="range-value">{{settings.digits}}</span>
           <div class="range-slider_wrapper">
             <span class="slider-bar"  v-bind:style="{ width: digitsThumbPosition + '%' }"></span>
             <input type="range" class="range-slider" min="0" v-bind:max="settings.maxDigits" v-model="settings.digits">
-          </div>  
+          </div>
         </div>
-        <div class="field-wrap">  
+        <div class="field-wrap">
           <label>Symbols</label>
           <span class="range-value">{{settings.symbols}}</span>
           <div class="range-slider_wrapper">
             <span class="slider-bar"  v-bind:style="{ width: symbolsThumbPosition + '%' }"></span>
             <input type="range" class="range-slider" min="0" v-bind:max="settings.maxSymbols" v-model="settings.symbols">
-          </div>  
+          </div>
         </div>
       </form>
     </section>
   </div>
+  <footer>
+    <div class="github-links">
+      <a class="github-button" href="https://github.com/nourabusoud" aria-label="Follow @nourabusoud on GitHub">Follow @nourabusoud</a>
+      <a class="github-button" href="https://github.com/nourabusoud/password-genie" data-icon="octicon-star" aria-label="Star nourabusoud/vue-todo-list on GitHub">Star</a>
+    </div>
+    Made with <3 by <a href="https://www.nourabusoud.com/">Nour Soud</a><br>
+    View on <a href="https://github.com/nourabusoud/password-genie">Github</a>
+  </footer>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 <script>
 new Vue({
@@ -98,7 +107,7 @@ new Vue({
         upperCase: 4,
         numbers: 5,
         symbols: 5,
-        combo: 0, 
+        combo: 0,
         flatLower: 0,
         flatNumber: 0
       };
@@ -108,41 +117,41 @@ new Vue({
         score: 0
       };
 
-      
+
       var baseScore = 30;
 
       for (i=0; i < this.password.length;i++){
         if (this.password.charAt(i).match(/[A-Z]/g)) {count.upperCase++;}
         if (this.password.charAt(i).match(/[0-9]/g)) {count.numbers++;}
-        if (this.password.charAt(i).match(/(.*[!,@,#,$,%,^,&,*,?,_,~])/)) {count.symbols++;} 
+        if (this.password.charAt(i).match(/(.*[!,@,#,$,%,^,&,*,?,_,~])/)) {count.symbols++;}
       }
-      
+
       count.excess = this.password.length - 6;
-      
+
       if (count.upperCase && count.numbers && count.symbols){
-        weight.combo = 25; 
+        weight.combo = 25;
       }
       else if ((count.upperCase && count.numbers) || (count.upperCase && count.symbols) || (count.numbers && count.symbols)){
-        weight.combo = 15; 
+        weight.combo = 15;
       }
-      
+
       if (this.password.match(/^[\sa-z]+$/))
-      { 
+      {
         weight.flatLower = -30;
       }
-      
+
       if (this.password.match(/^[\s0-9]+$/))
-      { 
+      {
         weight.flatNumber = -50;
       }
 
-      var score = 
-        baseScore + 
-        (count.excess * weight.excess) + 
-        (count.upperCase * weight.upperCase) + 
-        (count.numbers * weight.numbers) + 
-        (count.symbols * weight.symbols) + 
-        weight.combo + weight.flatLower + 
+      var score =
+        baseScore +
+        (count.excess * weight.excess) +
+        (count.upperCase * weight.upperCase) +
+        (count.numbers * weight.numbers) +
+        (count.symbols * weight.symbols) +
+        weight.combo + weight.flatLower +
         weight.flatNumber;
 
       if(score < 30 ) {
@@ -188,7 +197,7 @@ new Vue({
       copyElement.select();
       document.execCommand('copy');
       body.removeChild(copyElement);
-      
+
       this.copied = true;
       // reset this.copied
       setTimeout(() => {
